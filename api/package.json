@@ -2,9 +2,9 @@
   "name": "maxxr",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon app.js -e html,js,scss",
+    "start": "nodemon server.js -e html,js,scss",
     "eject": "react-scripts eject",
     "seed": "knex migrate:latest && knex seed:run",
     "drop": "knex migrate:rollback",
