@@ -1,6 +1,3 @@
-// const router = require('express').Router()
-// const { User } = require('../controllers')
-
 import { Router } from 'express'
 import { User } from '../controllers/index'
 
