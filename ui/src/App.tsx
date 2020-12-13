@@ -17,9 +17,7 @@ const App = () => {
     switch (view) {
       case 'home':
         return <Home />
-      case 'signup':
-        return <Auth view={view} setUser={setUser} />
-      case 'signup':
+      case 'signup': case 'signin':
         return <Auth view={view} setUser={setUser} />
       // case 'dashboard':
       //   return <Dashboard />
