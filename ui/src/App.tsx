@@ -1,40 +1,39 @@
-import React, { useState } from 'react'
+import React, { Suspense, lazy, useState } from 'react'
+import {
+  createMemorySource,
+  createHistory,
+  LocationProvider,
+  Router
+} from '@reach/router'
 
 import { UserData } from './types'
 
-import Home from './Home'
-import Auth from './Auth'
-import Nav from './Nav'
-
 import './App.css'
 import 'antd/dist/antd.css'
+import Nav from './Nav'
+
+const Home = lazy(() => import('./Home'))
+const Auth = lazy(() => import('./Auth'))
+
+const source = createMemorySource('/')
+const history = createHistory(source)
 
 const App = () => {
   const [user, setUser] = useState<UserData | null>(null) // <UserData>
 
-  const pathname = window.location.pathname
-
-  const renderContent = () => {
-    switch (pathname) {
-      case '/home': case '/':
-        return <Home />
-      case '/signup': case '/signin':
-        return <Auth setUser={setUser} />
-      // case 'dashboard':
-      //   return <Dashboard />
-      // case 'profile':
-      //   return <Profile />
-      default:
-        return <Home />
-      // return user !== null ? <Dashboard/> : <Home />
-    }
-  }
-
   return (
-    <div className='App'>
-      <Nav />
-      {renderContent()}
-    </div>
+    <LocationProvider history={history}>
+      <div className='App'>
+        <Nav />
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <Router>
+            <Home path='/' />
+            <Auth path='auth/*' />
+          </Router>
+        </Suspense>
+      </div>
+    </LocationProvider>
   )
 }
 
