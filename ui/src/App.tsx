@@ -24,7 +24,7 @@ const App = () => {
   return (
     <LocationProvider history={history}>
       <div className='App'>
-        <Nav />
+        <Nav user={user} />
 
         <Suspense fallback={<div>Loading...</div>}>
           <Router>

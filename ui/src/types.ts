@@ -6,9 +6,9 @@ export interface UserInput {
 export interface UserData {
     id: number,
     username: string,
-    password: string,
+    password?: string,
     token: string,
-    created_at: string,
-    updated_at: string,
+    created_at?: string,
+    updated_at?: string,
 }
 
