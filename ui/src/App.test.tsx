@@ -1,6 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import { getByAltText, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import App from './App'
 
 test('renders navbar and content', () => {
