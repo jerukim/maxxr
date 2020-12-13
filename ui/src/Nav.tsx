@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { Link, useLocation } from '@reach/router'
 import { Button, Dropdown, Menu } from 'antd'
 import { UserData } from './types'
