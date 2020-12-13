@@ -1,21 +1,14 @@
 import React from 'react'
 import { Button } from 'antd'
 
-const Nav = ({ setView }: { setView: React.Dispatch<React.SetStateAction<string>> }) => {
+const Nav = () => {
+
     return (
         <header className='header'>
             <div className='header-logo'>Maxxr</div>
             <div className='header-actions'>
-                <Button
-                    name='signin'
-                    onClick={() => setView('signin')}
-                    type='text'
-                >Sign In</Button>
-
-                <Button
-                    name='signup'
-                    onClick={() => setView('signup')}
-                >Sign Up</Button>
+                <Button href='/signin' type='text'>Sign In</Button>
+                <Button href='/signup'>Sign Up</Button>
             </div>
         </header>
     )

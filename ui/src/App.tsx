@@ -11,27 +11,29 @@ import 'antd/dist/antd.css'
 
 const App = () => {
   const [user, setUser] = useState<UserData | null>(null) // <UserData>
-  const [view, setView] = useState<string>('home')
 
-  const renderContent = (view: string) => {
-    switch (view) {
-      case 'home':
+  const pathname = window.location.pathname
+
+  const renderContent = () => {
+    switch (pathname) {
+      case '/home': case '/':
         return <Home />
-      case 'signup': case 'signin':
-        return <Auth view={view} setUser={setUser} />
+      case '/signup': case '/signin':
+        return <Auth setUser={setUser} />
       // case 'dashboard':
       //   return <Dashboard />
       // case 'profile':
       //   return <Profile />
       default:
         return <Home />
+      // return user !== null ? <Dashboard/> : <Home />
     }
   }
 
   return (
     <div className='App'>
-      <Nav setView={setView} />
-      {renderContent(view)}
+      <Nav />
+      {renderContent()}
     </div>
   )
 }
