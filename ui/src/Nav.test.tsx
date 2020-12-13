@@ -60,8 +60,6 @@ test(`doesn't render action buttons on auth route`, async () => {
 
 })
 
-// profile button should be shown when user is logged in
-// profile button show have a drop down that shows signout button or edit profile option
 test(`renders a profile button when user is logged in`, async () => {
     const user: UserData = {
         id: 1,
