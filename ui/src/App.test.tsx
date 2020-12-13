@@ -2,10 +2,8 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import App from './App'
 
-test('renders navbar and content', () => {
+test('renders navbar', () => {
   const { container } = render(<App />)
-
-  expect(container.firstChild?.childNodes.length).toEqual(2)
 
   expect(container.firstChild?.firstChild?.tagName).toEqual('HEADER')
 
