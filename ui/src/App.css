@@ -1,3 +1,14 @@
+.App {
+  width: 90%;
+  margin: auto;
+  max-width: 900px;
+}
+
+.error {
+  color: red
+}
+
+/* NAVBAR */
 .header {
   display: flex;
   justify-content: space-between;
@@ -9,17 +20,13 @@
   align-items: center;
 }
 
-.App {
-  width: 90%;
-  margin: auto;
-  max-width: 900px;
-}
 
 .header-logo {
   font-size: 2rem;
   font-weight: bold;
 }
 
+/* HOME */
 .home-container {
   display: flex;
   flex-wrap: wrap;
@@ -44,4 +51,17 @@
   width: 50%;
   min-width: 300px;
   font-size: 1rem;
+}
+
+
+/* AUTH */
+.auth {
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  margin: 5em auto;
+}
+
+.auth-error {
+  margin: 1em;
 }

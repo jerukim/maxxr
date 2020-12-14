@@ -6,9 +6,9 @@ const app = express()
 
 app.use(express.json())
 
-app.get('/', (_, res) => {
-    res.send('MAXXXXRRRR')
-})
+// app.get('/*', (_, res) => {
+//     res.sendFile('/public/index.html')
+// })
 
 app.use('/auth', routes.auth)
 

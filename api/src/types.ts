@@ -1,4 +1,4 @@
-export interface UserAuthInput {
+export interface UserInput {
     username: string,
     password: string,
 }
@@ -6,9 +6,8 @@ export interface UserAuthInput {
 export interface UserData {
     id: number,
     username: string,
-    password?: string,
+    password: string,
     token: string,
-    created_at?: string,
-    updated_at?: string,
+    created_at: string,
+    updated_at: string,
 }
-
