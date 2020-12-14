@@ -1,5 +1,5 @@
 import React, { useState, SetStateAction, Dispatch } from 'react'
-import { Link, useLocation, RouteComponentProps } from '@reach/router'
+import { Link, RouteComponentProps } from '@reach/router'
 import { User } from './api'
 import { Form, Input, Button } from 'antd'
 
@@ -46,8 +46,12 @@ const Auth = (props: AuthProps) => {
 
         } else if (navigate && user.token) {
             setUser(user)
-            navigate('dashboard')
+            navigate('/dashboard')
         }
+    }
+
+    const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        e.preventDefault()
     }
 
     return (
@@ -71,6 +75,7 @@ const Auth = (props: AuthProps) => {
                 >
                     <Input.Password
                         size='large'
+                        onPressEnter={handleEnter}
                     />
                 </Form.Item>
 

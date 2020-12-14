@@ -14,6 +14,7 @@ import Nav from './Nav'
 
 const Home = lazy(() => import('./Home'))
 const Auth = lazy(() => import('./Auth'))
+const Dashboard = lazy(() => import('./Dashboard'))
 
 const source = createMemorySource('/')
 const history = createHistory(source)
@@ -30,6 +31,7 @@ const App = () => {
           <Router>
             <Home path='/' />
             <Auth path='auth/*' setUser={setUser} />
+            <Dashboard path='/dashboard' user={user} />
           </Router>
         </Suspense>
       </div>
