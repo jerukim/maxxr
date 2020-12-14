@@ -1,19 +1,6 @@
 // const db = require('../db/db')
 import db from '../db'
-
-interface UserInput {
-    username: string,
-    password: string,
-}
-
-interface UserData {
-    id: number,
-    username: string,
-    password: string,
-    token: string,
-    created_at: string,
-    updated_at: string,
-}
+import { UserInput, UserData } from '../types'
 
 class User {
     async create(data: UserInput): Promise<UserData> {
