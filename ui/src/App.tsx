@@ -29,7 +29,7 @@ const App = () => {
         <Suspense fallback={<div>Loading...</div>}>
           <Router>
             <Home path='/' />
-            <Auth path='auth/*' />
+            <Auth path='auth/*' setUser={setUser} />
           </Router>
         </Suspense>
       </div>
