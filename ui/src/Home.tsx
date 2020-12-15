@@ -1,8 +1,7 @@
 import React from 'react'
-import { RouteComponentProps } from '@reach/router'
 import { Divider } from 'antd'
 
-function Home(props: RouteComponentProps) {
+function Home() {
     return (
         <div className='home'>
             <div className='home-container'>
