@@ -1,4 +1,3 @@
-// const db = require('../db/db')
 import db from '../db'
 import { UserInput, UserData } from '../types'
 
