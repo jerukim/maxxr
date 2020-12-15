@@ -1,24 +1,16 @@
 import React, { Fragment } from 'react'
-import { Link, useLocation } from '@reach/router'
+import { Link, RouteComponentProps, useLocation } from '@reach/router'
+import { useSelector } from 'react-redux'
 import { Button, Dropdown, Menu } from 'antd'
-import { UserData } from './types'
+import { RootState } from './types'
 
-export const ProfileMenu = (
-    <Menu>
-        <Menu.Item>
-            <Link to='/auth/signout'>Sign Out</Link>
-        </Menu.Item>
-        <Menu.Item>
-            <Link to='/profile'>Edit</Link>
-        </Menu.Item>
-    </Menu>
-)
+interface NavProps extends RouteComponentProps {
+}
 
-const Nav = ({ user }: { user: UserData | null }) => {
+const Nav = (props: NavProps) => {
     const location = useLocation()
-
-    const showActions = !location.pathname.includes('auth')
-    const isAuthenticated = user !== null
+    const showActions = !location?.pathname.includes('auth')
+    const isAuthenticated = useSelector((state: RootState) => !!state.user.token)
 
     return (
         <header
@@ -41,11 +33,11 @@ const Nav = ({ user }: { user: UserData | null }) => {
                             <Button>Profile</Button>
                         </Dropdown>
                     ) : (<Fragment>
-                        <Link to='/auth/signin'>
+                        <Link to='auth/signin'>
                             <Button type='text'>Sign In</Button>
                         </Link>
 
-                        <Link to='/auth/signup'>
+                        <Link to='auth/signup'>
                             <Button>Sign Up</Button>
                         </Link>
                     </Fragment>)
@@ -55,5 +47,16 @@ const Nav = ({ user }: { user: UserData | null }) => {
         </header >
     )
 }
+
+export const ProfileMenu = (
+    <Menu>
+        <Menu.Item>
+            <Link to='/auth/signout'>Sign Out</Link>
+        </Menu.Item>
+        <Menu.Item>
+            <Link to='/profile'>Edit</Link>
+        </Menu.Item>
+    </Menu>
+)
 
 export default Nav

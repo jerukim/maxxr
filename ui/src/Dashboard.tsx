@@ -1,17 +1,16 @@
 import React from 'react'
-import { Link, RouteComponentProps } from '@reach/router'
-import { UserData } from './types'
+import { RouteComponentProps } from '@reach/router'
+import { useSelector } from 'react-redux'
+import { RootState } from './types'
 
-interface DashboardProps extends RouteComponentProps {
-    user: UserData | null
-}
+interface DashboardProps extends RouteComponentProps { }
 
 const Dashboard = (props: DashboardProps) => {
-    const { user } = props
+    const { username } = useSelector((state: RootState) => state.user)
     return (
         <div>
             DASHBOARD
-            {user?.username}
+            {username}
         </div>
     )
 }
