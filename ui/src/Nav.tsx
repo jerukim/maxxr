@@ -4,8 +4,7 @@ import { useSelector } from 'react-redux'
 import { Button, Dropdown, Menu } from 'antd'
 import { RootState } from './types'
 
-interface NavProps extends RouteComponentProps {
-}
+interface NavProps extends RouteComponentProps { }
 
 const Nav = (props: NavProps) => {
     const location = useLocation()
