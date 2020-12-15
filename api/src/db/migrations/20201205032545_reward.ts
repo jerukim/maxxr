@@ -1,6 +1,6 @@
 const quarters = [1, 2, 3, 4]
 
-import * as Knex from "knex";
+import * as Knex from "knex"
 
 export async function up(knex: Knex): Promise<void> {
     await knex.schema.createTable('reward', (table) => {

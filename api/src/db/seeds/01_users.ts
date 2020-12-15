@@ -1,6 +1,6 @@
 import { Auth } from '../../models/index'
 
-import * as Knex from "knex";
+import * as Knex from "knex"
 
 export async function seed(knex: Knex): Promise<void> {
   await knex('user').del()
