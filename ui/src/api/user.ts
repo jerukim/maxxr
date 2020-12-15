@@ -1,11 +1,7 @@
-import { UserAuthInput } from '../types'
+import { AuthMethod, UserAuthInput, UserData } from '../types'
 
-interface UserModel {
-    [key: string]: any
-}
-
-const signin = async (credentials: UserAuthInput) => {
-    return await fetch(`/auth/signin`, {
+export const auth = async (method: AuthMethod, credentials: UserAuthInput): Promise<UserData> => {
+    return await fetch(`/auth/${method}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -13,12 +9,3 @@ const signin = async (credentials: UserAuthInput) => {
         body: JSON.stringify(credentials)
     }).then(res => res.json())
 }
-
-const signup = async (credentials: UserAuthInput) => {
-
-}
-
-export default {
-    signin,
-    signup
-} as UserModel
