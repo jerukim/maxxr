@@ -1,12 +1,10 @@
 import React, { Fragment } from 'react'
-import { Link, RouteComponentProps, useLocation } from '@reach/router'
+import { Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { Button, Dropdown, Menu } from 'antd'
 import { RootState } from './types'
 
-interface NavProps extends RouteComponentProps { }
-
-const Nav = (props: NavProps) => {
+const Nav = () => {
     const location = useLocation()
     const showActions = !location?.pathname.includes('auth')
     const isAuthenticated = useSelector((state: RootState) => !!state.user.token)
@@ -32,11 +30,11 @@ const Nav = (props: NavProps) => {
                             <Button>Profile</Button>
                         </Dropdown>
                     ) : (<Fragment>
-                        <Link to='auth/signin'>
+                        <Link to='/auth/signin'>
                             <Button type='text'>Sign In</Button>
                         </Link>
 
-                        <Link to='auth/signup'>
+                        <Link to='/auth/signup'>
                             <Button>Sign Up</Button>
                         </Link>
                     </Fragment>)

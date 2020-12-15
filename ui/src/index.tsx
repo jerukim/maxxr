@@ -1,10 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {
-  createMemorySource,
-  createHistory,
-  LocationProvider,
-} from '@reach/router'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './store'
 import reportWebVitals from './reportWebVitals'
@@ -12,16 +8,13 @@ import reportWebVitals from './reportWebVitals'
 import './index.css'
 import App from './App'
 
-const source = createMemorySource('/')
-const history = createHistory(source)
-
 ReactDOM.render(
   <React.StrictMode>
-    <LocationProvider history={history}>
-      <Provider store={store}>
+    <Provider store={store}>
+      <Router>
         <App />
-      </Provider>
-    </LocationProvider>
+      </Router>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 )

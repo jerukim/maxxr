@@ -1,5 +1,5 @@
 import React, { KeyboardEvent } from 'react'
-import { Link, useNavigate, RouteComponentProps } from '@reach/router'
+import { Link, useHistory } from 'react-router-dom'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { Form, Input, Button } from 'antd'
 
@@ -18,7 +18,7 @@ interface AuthState {
     alternativeMethod: AuthMethod,
 }
 
-interface AuthProps extends RouteComponentProps, AuthState { }
+interface AuthProps extends AuthState { }
 
 const Auth = (props: AuthProps) => {
     const {
@@ -28,11 +28,9 @@ const Auth = (props: AuthProps) => {
         alternativeMessage,
         alternativeMethod,
     } = props
-    const navigate = useNavigate()
+    const history = useHistory()
     const dispatch = useDispatch()
     const { loading, error } = useSelector((state: RootState) => state.user)
-
-    // const [error, setError] = useState<boolean>(false)
 
     const handleEnter = (e: KeyboardEvent<HTMLInputElement>) => {
         e.preventDefault()
@@ -40,7 +38,7 @@ const Auth = (props: AuthProps) => {
 
     const handleSubmit = async (values: UserAuthInput) => {
         await dispatch(auth(method, values))
-        navigate('/dashboard')
+        history.push('/dashboard')
     }
 
     return (
