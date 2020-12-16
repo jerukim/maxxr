@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { User } from '../api'
+import { deleteState, loadState, saveState } from '../localStorage'
 import { UserAuthInput, Thunk, AuthMethod, APIError, UserData } from '../types'
 
 interface UserState {
@@ -7,6 +8,8 @@ interface UserState {
     loading: boolean,
     error: APIError | null
 }
+
+const persistedUserState = loadState('user')
 
 const defaultUserState: UserState = {
     data: {
@@ -20,7 +23,7 @@ const defaultUserState: UserState = {
 
 const userSlice = createSlice({
     name: 'user',
-    initialState: defaultUserState,
+    initialState: persistedUserState || defaultUserState,
     reducers: {
         authStart: (state) => {
             state.loading = true
