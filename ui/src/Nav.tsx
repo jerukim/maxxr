@@ -1,13 +1,33 @@
 import React, { Fragment } from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { Link, useHistory, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, Dropdown, Menu } from 'antd'
+import { signout } from './store/user'
 import { RootState } from './types'
 
 const Nav = () => {
     const location = useLocation()
     const showActions = !location?.pathname.includes('auth')
     const isAuthenticated = useSelector((state: RootState) => !!state.user.data.token)
+
+    const history = useHistory()
+    const dispatch = useDispatch()
+
+    const handleSignout = () => {
+        dispatch(signout())
+        history.push('/auth/signin')
+    }
+
+    const ProfileMenu = (
+        <Menu>
+            <Menu.Item>
+                <Link to='/profile'>Edit</Link>
+            </Menu.Item>
+            <Menu.Item onClick={handleSignout} >
+                Sign Out
+            </Menu.Item>
+        </Menu>
+    )
 
     return (
         <header
@@ -21,14 +41,19 @@ const Nav = () => {
             { showActions &&
                 <div className='header-actions'>
                     {isAuthenticated ? (
-                        <Dropdown
-                            overlay={ProfileMenu}
-                            trigger={['click']}
-                            placement='bottomCenter'
-                            arrow
-                        >
-                            <Button>Profile</Button>
-                        </Dropdown>
+                        <Fragment>
+                            <Button type='text'>
+                                <Link to='/dashboard'>Dashboard</Link>
+                            </Button>
+                            <Dropdown
+                                overlay={ProfileMenu}
+                                trigger={['click']}
+                                placement='bottomCenter'
+                                arrow
+                            >
+                                <Button>Profile</Button>
+                            </Dropdown>
+                        </Fragment>
                     ) : (<Fragment>
                         <Link to='/auth/signin'>
                             <Button type='text'>Sign In</Button>
@@ -44,16 +69,5 @@ const Nav = () => {
         </header >
     )
 }
-
-export const ProfileMenu = (
-    <Menu>
-        <Menu.Item>
-            <Link to='/auth/signout'>Sign Out</Link>
-        </Menu.Item>
-        <Menu.Item>
-            <Link to='/profile'>Edit</Link>
-        </Menu.Item>
-    </Menu>
-)
 
 export default Nav

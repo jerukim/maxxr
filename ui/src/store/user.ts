@@ -37,31 +37,43 @@ const userSlice = createSlice({
             state.data.token = token
             state.loading = false
             state.error = null
+
+            saveState('user', state)
         },
         authFailure: (state, action) => {
             state.loading = false
             state.error = action.payload
         },
 
-        signoutSuccess: (state, action) => {
+        signoutSuccess: (state) => {
+            state.data = defaultUserState.data
             state.loading = false
             state.error = null
-            state.data = defaultUserState.data
+
+            deleteState('user')
         },
         signoutFailure: (state, action) => {
-            // state = defaultUserState
+            const { error } = action.payload
+            state.data = defaultUserState.data
             state.loading = false
-            state.error = null
+            state.error = error
         }
     }
 })
 
-export const { authStart, authSuccess, authFailure, signoutSuccess, signoutFailure } = userSlice.actions
+export const {
+    authStart,
+    authSuccess,
+    authFailure,
+    signoutSuccess,
+    signoutFailure
+} = userSlice.actions
 
 export default userSlice.reducer
 
 export const auth = (method: AuthMethod, credentials: UserAuthInput): Thunk => async dispatch => {
     dispatch(authStart())
+
     try {
         const user = await User.auth(method, credentials)
 
@@ -73,5 +85,20 @@ export const auth = (method: AuthMethod, credentials: UserAuthInput): Thunk => a
 
     } catch (err) {
         dispatch(authFailure(err))
+    }
+}
+
+export const signout = (): Thunk => async dispatch => {
+    dispatch(authStart())
+
+    try {
+        const res = await User.signout()
+
+        if (res.status !== 204) throw new Error('signout failure')
+
+        dispatch(signoutSuccess())
+
+    } catch (error) {
+        dispatch(signoutFailure(error))
     }
 }
