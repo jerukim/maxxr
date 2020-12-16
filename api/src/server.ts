@@ -1,6 +1,6 @@
 import express from 'express'
 import * as routes from './routes'
-import { errorHandler } from './middleware'
+import { errorHandler, isAuthenticated } from './middleware'
 
 const app = express()
 
@@ -11,6 +11,8 @@ app.use(express.json())
 // })
 
 app.use('/auth', routes.auth)
+
+app.use(isAuthenticated)
 
 app.use(errorHandler)
 
