@@ -4,7 +4,7 @@ import { RootState } from './types'
 
 
 const Dashboard = () => {
-    const { username } = useSelector((state: RootState) => state.user)
+    const { username } = useSelector((state: RootState) => state.user.data)
     return (
         <div>
             DASHBOARD

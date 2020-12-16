@@ -1,19 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { User } from '../api'
-import { UserAuthInput, Thunk, AuthMethod, APIError } from '../types'
+import { UserAuthInput, Thunk, AuthMethod, APIError, UserData } from '../types'
 
 interface UserState {
-    id?: number,
-    username?: string,
-    token?: string,
+    data: UserData,
     loading: boolean,
     error: APIError | null
 }
 
 const defaultUserState: UserState = {
-    id: -1,
-    username: '',
-    token: '',
+    data: {
+        id: -1,
+        username: '',
+        token: '',
+    },
     loading: false,
     error: null
 }
@@ -29,9 +29,9 @@ const userSlice = createSlice({
 
         authSuccess: (state, action) => {
             const { id, username, token } = action.payload
-            state.id = id
-            state.username = username
-            state.token = token
+            state.data.id = id
+            state.data.username = username
+            state.data.token = token
             state.loading = false
             state.error = null
         },
@@ -41,7 +41,9 @@ const userSlice = createSlice({
         },
 
         signoutSuccess: (state, action) => {
-            state = defaultUserState
+            state.loading = false
+            state.error = null
+            state.data = defaultUserState.data
         },
         signoutFailure: (state, action) => {
             // state = defaultUserState

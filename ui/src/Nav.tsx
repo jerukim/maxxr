@@ -7,7 +7,7 @@ import { RootState } from './types'
 const Nav = () => {
     const location = useLocation()
     const showActions = !location?.pathname.includes('auth')
-    const isAuthenticated = useSelector((state: RootState) => !!state.user.token)
+    const isAuthenticated = useSelector((state: RootState) => !!state.user.data.token)
 
     return (
         <header
