@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react'
 import { Switch, Route, useRouteMatch, Redirect, RouteProps } from 'react-router-dom'
+import Loading from './Loading'
 import { useAuth } from './store/user'
 
 const Home = lazy(() => import('./Home'))
@@ -9,7 +10,7 @@ const Dashboard = lazy(() => import('./Dashboard'))
 
 const Routes = () => {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loading />}>
             <Switch>
                 <Route path='/auth'>
                     <AuthRoutes />
