@@ -14,6 +14,8 @@ app.use('/auth', routes.auth)
 
 app.use(isAuthenticated)
 
+app.use('/category', routes.category)
+
 app.use(errorHandler)
 
 const port = process.env.PORT || 8080
