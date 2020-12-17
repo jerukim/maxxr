@@ -22,7 +22,6 @@ class User {
     async getUserByName(username: string): Promise<UserData> {
         const [user] = await db('user')
             .where({ username })
-        // .returning()
 
         return user
     }

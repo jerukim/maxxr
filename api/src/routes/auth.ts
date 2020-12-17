@@ -2,11 +2,13 @@ import { Router } from 'express'
 import { isAuthenticated } from '../middleware'
 import { User } from '../controllers/index'
 
-export const authRouter = Router()
+const router = Router()
 
-authRouter.post('/signup', User.signup)
-authRouter.post('/signin', User.signin)
+router.post('/signup', User.signup)
+router.post('/signin', User.signin)
 
-authRouter.use(isAuthenticated)
+router.use(isAuthenticated)
 
-authRouter.post('/signout', User.signout)
+router.post('/signout', User.signout)
+
+export default router
