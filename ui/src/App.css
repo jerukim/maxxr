@@ -53,7 +53,6 @@
   font-size: 1rem;
 }
 
-
 /* AUTH */
 .auth {
   text-align: center;
@@ -64,4 +63,8 @@
 
 .auth-error {
   margin: 1em;
+}
+
+.auth-alert {
+  margin-bottom: 2em;
 }

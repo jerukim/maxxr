@@ -27,6 +27,13 @@ class User {
         return user
     }
 
+    async getUserByToken(token: string): Promise<UserData> {
+        const [user] = await db('user')
+            .where({ token })
+
+        return user
+    }
+
     static returnValues = ['id', 'username', 'token', 'created_at']
 }
 

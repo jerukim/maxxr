@@ -71,6 +71,24 @@ class UserController {
             next(error)
         }
     }
+
+    async signout(request: Request, response: Response, next: NextFunction) {
+        try {
+            const { user } = response.locals
+
+            await User.update(user.id, {
+                ...user,
+                token: null
+            })
+
+            response
+                .status(204)
+                .send()
+
+        } catch (error) {
+            next(error)
+        }
+    }
 }
 
 export default new UserController()

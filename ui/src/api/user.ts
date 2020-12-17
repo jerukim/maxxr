@@ -1,3 +1,4 @@
+import { getToken } from './utils'
 import { AuthMethod, UserAuthInput, UserData } from '../types'
 
 export const auth = async (method: AuthMethod, credentials: UserAuthInput): Promise<UserData> => {
@@ -8,4 +9,15 @@ export const auth = async (method: AuthMethod, credentials: UserAuthInput): Prom
         },
         body: JSON.stringify(credentials)
     }).then(res => res.json())
+}
+
+export const signout = async (): Promise<Response> => {
+    const token = getToken()
+
+    return await fetch(`/auth/signout`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    }).then(res => res)
 }
