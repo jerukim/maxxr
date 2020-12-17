@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { Auth, User } from '../models/index'
+import { Auth, User, UserCard, Reward } from '../models/index'
 import {
     AuthenticationError,
     ConflictError,
@@ -72,7 +72,7 @@ class UserController {
         }
     }
 
-    async signout(request: Request, response: Response, next: NextFunction) {
+    async signout(_: Request, response: Response, next: NextFunction) {
         try {
             const { user } = response.locals
 
@@ -84,6 +84,32 @@ class UserController {
             response
                 .status(204)
                 .send()
+
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async wallet(_: Request, response: Response, next: NextFunction) {
+        try {
+            const { user } = response.locals
+
+            const userCards = await UserCard.findAllByUserId(user.id)
+
+            const userCardsRewards = await Promise.all(userCards.map(({ card_id }) => {
+                return Reward.findAllByCardId(card_id)
+            }))
+
+            const wallet = userCards.map((card, i) => {
+                return {
+                    ...card,
+                    rewards: userCardsRewards[i]
+                }
+            })
+
+            response
+                .status(200)
+                .json(wallet)
 
         } catch (error) {
             next(error)

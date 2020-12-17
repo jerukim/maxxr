@@ -15,6 +15,7 @@ app.use('/auth', routes.auth)
 app.use(isAuthenticated)
 
 app.use('/category', routes.category)
+app.use('/wallet', routes.wallet)
 
 app.use(errorHandler)
 
