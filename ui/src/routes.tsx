@@ -1,5 +1,6 @@
 import React, { Suspense, lazy } from 'react'
-import { Switch, Route, useRouteMatch } from 'react-router-dom'
+import { Switch, Route, useRouteMatch, Redirect, RouteProps, useLocation } from 'react-router-dom'
+import { useAuth } from './store/user'
 
 const Home = lazy(() => import('./Home'))
 const Signin = lazy(() => import('./auth/Signin'))
@@ -14,9 +15,9 @@ const Routes = () => {
                     <AuthRoutes />
                 </Route>
 
-                <Route path='/dashboard'>
+                <PrivateRoute path='/dashboard'>
                     <Dashboard />
-                </Route>
+                </PrivateRoute>
 
                 <Route exact path='/'>
                     <Home />
@@ -37,6 +38,22 @@ const AuthRoutes = () => {
                 <Signup />
             </Route>
         </Switch>
+    )
+}
+
+interface PrivateRouteProps extends RouteProps { }
+
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, ...rest }) => {
+    const isAuthenticated = useAuth()
+    const { path, location } = rest
+
+    return (
+        <Route {...rest}>
+            {isAuthenticated ?
+                children :
+                <Redirect to={{ pathname: '/auth/signin', state: { from: location } }} />
+            }
+        </Route>
     )
 }
 

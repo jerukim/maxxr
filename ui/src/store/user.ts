@@ -1,7 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { useSelector } from 'react-redux'
+import { RootState } from '.'
 import { User } from '../api'
 import { deleteState, loadState, saveState } from '../localStorage'
 import { UserAuthInput, Thunk, AuthMethod, APIError, UserData } from '../types'
+
+export const useAuth = () => {
+    return useSelector((state: RootState) => !!state.user.data.token)
+}
 
 interface UserState {
     data: UserData,

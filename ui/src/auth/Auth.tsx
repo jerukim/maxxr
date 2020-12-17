@@ -1,5 +1,5 @@
 import React, { KeyboardEvent } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import { connect, useDispatch, useSelector } from 'react-redux'
 import { Form, Input, Button } from 'antd'
 
@@ -19,6 +19,11 @@ interface AuthState {
 }
 
 interface AuthProps extends AuthState { }
+interface LocationState {
+    from: {
+        pathname: string
+    }
+}
 
 const Auth = (props: AuthProps) => {
     const {
@@ -28,8 +33,14 @@ const Auth = (props: AuthProps) => {
         alternativeMessage,
         alternativeMethod,
     } = props
+
     const history = useHistory()
+
     const dispatch = useDispatch()
+
+    const location = useLocation<LocationState>()
+    const { from } = location.state || { from: { pathname: '' } }
+
     const { loading, error } = useSelector((state: RootState) => state.user)
 
     const handleEnter = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -38,11 +49,19 @@ const Auth = (props: AuthProps) => {
 
     const handleSubmit = async (values: UserAuthInput) => {
         await dispatch(auth(method, values))
-        history.push('/dashboard')
+        history.push(from.pathname || '/dashboard')
     }
 
     return (
         <div className='auth'>
+            {from.pathname && (
+                <div className='auth-alert'>
+                    <p>
+                        You must be logged in to view that page.
+                    </p>
+                </div>
+            )}
+
             <Form
                 layout='vertical'
                 onFinish={handleSubmit}
@@ -85,13 +104,14 @@ const Auth = (props: AuthProps) => {
                 </Form.Item>
             </Form>
 
-
-            <p>
-                {alternativeMessage}{' '}
-                <span>
-                    <Link to={`/auth/${alternativeMethod}`}>{alternativeDisplayName}</Link>
-                </span>
-            </p>
+            <div className='auth-alt'>
+                <p>
+                    {alternativeMessage}{' '}
+                    <span>
+                        <Link to={`/auth/${alternativeMethod}`}>{alternativeDisplayName}</Link>
+                    </span>
+                </p>
+            </div>
         </div>
     )
 }

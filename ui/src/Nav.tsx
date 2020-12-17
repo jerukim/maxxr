@@ -1,14 +1,13 @@
 import React, { Fragment } from 'react'
 import { Link, useHistory, useLocation } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Button, Dropdown, Menu } from 'antd'
-import { signout } from './store/user'
-import { RootState } from './types'
+import { signout, useAuth } from './store/user'
 
 const Nav = () => {
     const location = useLocation()
     const showActions = !location?.pathname.includes('auth')
-    const isAuthenticated = useSelector((state: RootState) => !!state.user.data.token)
+    const isAuthenticated = useAuth()
 
     const history = useHistory()
     const dispatch = useDispatch()
