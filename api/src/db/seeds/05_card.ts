@@ -25,7 +25,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       id: 3,
       name: 'Discover it',
-      reward_type_id: 2,
+      reward_type_id: 1,
       issuer_id: 2,
       network_id: 4,
       // annual_fee: 0.0,
