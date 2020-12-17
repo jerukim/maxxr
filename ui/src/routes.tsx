@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react'
-import { Switch, Route, useRouteMatch, Redirect, RouteProps, useLocation } from 'react-router-dom'
+import { Switch, Route, useRouteMatch, Redirect, RouteProps } from 'react-router-dom'
 import { useAuth } from './store/user'
 
 const Home = lazy(() => import('./Home'))
@@ -45,7 +45,7 @@ interface PrivateRouteProps extends RouteProps { }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children, ...rest }) => {
     const isAuthenticated = useAuth()
-    const { path, location } = rest
+    const { location } = rest
 
     return (
         <Route {...rest}>
