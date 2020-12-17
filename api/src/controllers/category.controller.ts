@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import { Category } from '../models/index'
 
 class CategoryController {
-    async list(request: Request, response: Response, next: NextFunction) {
+    async list(_: Request, response: Response, next: NextFunction) {
         try {
             const categories = await Category.findAll()
 
