@@ -10,10 +10,13 @@ export async function up(knex: Knex): Promise<void> {
             .notNullable()
 
         table.enum('active_quarter', quarters)
+            .index()
 
         table.date('expires_at')
+            .index()
 
         table.string('expires_in')
+            .index()
 
         table.integer('card_id')
         table.foreign('card_id')
