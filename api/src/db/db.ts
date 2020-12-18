@@ -1,3 +1,6 @@
+import pg from 'pg'
+pg.types.setTypeParser(1700, 'text', parseFloat)
+
 import Knex from 'knex'
 
 const config = {

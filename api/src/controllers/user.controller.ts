@@ -96,14 +96,15 @@ class UserController {
 
             const userCards = await UserCard.findAllByUserId(user.id)
 
-            const userCardsRewards = await Promise.all(userCards.map(({ card_id }) => {
-                return Reward.findAllByCardId(card_id)
-            }))
+            const userCardsRewards = await Promise.all(
+                userCards.map(({ card_id }) => Reward.findAllByCardId(card_id))
+            )
 
             const wallet = userCards.map((card, i) => {
+                const rewards = userCardsRewards[i]
                 return {
                     ...card,
-                    rewards: userCardsRewards[i]
+                    rewards
                 }
             })
 
