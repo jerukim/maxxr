@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { Auth, User, UserCard, Reward } from '../models/index'
+import { Auth, User, UserCard, Reward, Category } from '../models/index'
 import {
     AuthenticationError,
     ConflictError,
@@ -97,9 +97,10 @@ class UserController {
             const userCards = await UserCard.findAllByUserId(user.id)
 
             const userCardsRewards = await Promise.all(
-                userCards.map(({ card_id }) => Reward.findAllByCardId(card_id))
+                userCards.map(({ card_id }) => Reward.findAll(card_id, user.id))
             )
 
+            // map rewards to cards
             const wallet = userCards.map((card, i) => {
                 const rewards = userCardsRewards[i]
                 return {
@@ -108,11 +109,61 @@ class UserController {
                 }
             })
 
+            let categories = await Category.findAll()
+
+            // map card rewards to categories
+            categories = categories.map(category => {
+                // add type
+                const recommended: any[] = []
+
+                for (const card of wallet) {
+                    const { rewards, card_id } = card
+
+                    // add type
+                    const baseReward = rewards.find(
+                        (reward: any) => !reward.category && !reward.subcategory
+                    )
+
+                    // find all the rewards for card that matches category
+                    // add type
+                    const cardCategoryRewards = rewards.filter((reward: any) =>
+                        reward.category === category.name
+                    )
+
+                    recommended.push({
+                        card_id,
+                        base_rate: baseReward.rate,
+                        category_rate: cardCategoryRewards.length ? cardCategoryRewards[0].rate : null,
+                        rewards: cardCategoryRewards
+                    })
+                }
+
+                return {
+                    ...category,
+                    recommended
+                }
+            })
+
+            // sort category card recommendations by rate
+            categories = categories.map(category => {
+                let { recommended } = category
+
+                recommended = recommended.sort((a: any, b: any) => {
+                    return (b.category_rate || b.base_rate) - (a.category_rate || a.base_rate)
+                })
+
+                return {
+                    ...category,
+                    recommended
+                }
+            })
+
             response
                 .status(200)
-                .json(wallet)
+                .json({ wallet, categories })
 
         } catch (error) {
+            console.log(error)
             next(error)
         }
     }
