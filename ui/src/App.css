@@ -25,7 +25,6 @@
   align-items: center;
 }
 
-
 .header-logo {
   font-size: 2rem;
   font-weight: bold;
@@ -75,3 +74,34 @@
 }
 
 /* DASHBOARD */
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.dashboard-cards {
+  width: 100%;
+}
+
+.dashboard-card-rewards {
+  display: flex;
+  justify-content: space-between;
+}
+.dashboard-card-reward {
+  text-align: center;
+}
+
+.dashboard-categories {
+  width: 100%;
+}
+
+@media (min-width: 430px) {
+  .dashboard-cards {
+    width: 50%;
+  }
+  .dashboard-categories {
+    width: 50%;
+  }
+}
