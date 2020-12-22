@@ -86,7 +86,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       id: 43,
       card_id: 2,
-      rate: 1.5,
+      rate: 3,
       active_quarter: null,
       expires_at: null,
       expires_in: null,
@@ -97,7 +97,7 @@ export async function seed(knex: Knex): Promise<void> {
     {
       id: 8,
       card_id: 2,
-      rate: 1.5,
+      rate: 5,
       active_quarter: null,
       expires_at: null,
       expires_in: null,
