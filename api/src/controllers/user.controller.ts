@@ -6,6 +6,7 @@ import {
     NotFoundError,
     ValidationError,
 } from '../models/error'
+import { SubcategoryData, RewardData, RecommendedCardData, RewardCategory } from 'src/types'
 
 class UserController {
     async signup(request: Request, response: Response, next: NextFunction) {
@@ -100,12 +101,45 @@ class UserController {
                 userCards.map(({ card_id }) => Reward.findAll(card_id, user.id))
             )
 
+            const subcategories: SubcategoryData[] = []
+
             // map rewards to cards
             const wallet = userCards.map((card, i) => {
-                const rewards = userCardsRewards[i]
+                const cardRewards = userCardsRewards[i]
+
+                let baseRate = 0
+                const cardRewardsByCategory: { [key: string]: RewardData[] } = {}
+                const extras = []
+
+                for (const reward of cardRewards) {
+                    if (!reward.category && !reward.subcategory) {
+                        baseRate = reward.rate
+                        continue
+                    }
+
+                    if (reward.category) {
+                        cardRewardsByCategory[reward.category] = [...(cardRewardsByCategory[reward.category] || []), reward]
+                    }
+
+                    if (reward.subcategory) {
+                        extras.push(reward)
+                        subcategories.push({ card_id: card.card_id, ...reward })
+                    }
+                }
+
+                const reward_categories: RewardCategory[] = Object.entries(cardRewardsByCategory).map(([category, rewards]) => {
+                    return {
+                        category,
+                        category_rate: rewards.length ? rewards[0].rate : null,
+                        rewards
+                    }
+                })
+
                 return {
                     ...card,
-                    rewards
+                    base_rate: baseRate,
+                    reward_categories,
+                    reward_subcategories: extras
                 }
             })
 
@@ -113,28 +147,20 @@ class UserController {
 
             // map card rewards to categories
             categories = categories.map(category => {
-                // add type
-                const recommended: any[] = []
+                const recommended: RecommendedCardData[] = []
 
                 for (const card of wallet) {
-                    const { rewards, card_id } = card
+                    const { reward_categories, card_id, base_rate } = card
 
-                    // add type
-                    const baseReward = rewards.find(
-                        (reward: any) => !reward.category && !reward.subcategory
-                    )
-
-                    // find all the rewards for card that matches category
-                    // add type
-                    const cardCategoryRewards = rewards.filter((reward: any) =>
+                    const { rewards, category_rate } = reward_categories.find((reward: RewardData) =>
                         reward.category === category.name
-                    )
+                    ) || { rewards: [], category_rate: null }
 
                     recommended.push({
                         card_id,
-                        base_rate: baseReward.rate,
-                        category_rate: cardCategoryRewards.length ? cardCategoryRewards[0].rate : null,
-                        rewards: cardCategoryRewards
+                        base_rate,
+                        category_rate,
+                        rewards
                     })
                 }
 
@@ -148,7 +174,7 @@ class UserController {
             categories = categories.map(category => {
                 let { recommended } = category
 
-                recommended = recommended.sort((a: any, b: any) => {
+                recommended = recommended.sort((a: RecommendedCardData, b: RecommendedCardData) => {
                     return (b.category_rate || b.base_rate) - (a.category_rate || a.base_rate)
                 })
 
@@ -160,7 +186,11 @@ class UserController {
 
             response
                 .status(200)
-                .json({ wallet, categories })
+                .json({
+                    wallet,
+                    categories,
+                    subcategories
+                })
 
         } catch (error) {
             console.log(error)

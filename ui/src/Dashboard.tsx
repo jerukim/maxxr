@@ -11,6 +11,13 @@ interface CardData {
     issuer: string,
     network: string,
     approved_on: string,
+    base_rate: number,
+    reward_categories: CardRewardCategories[]
+}
+
+interface CardRewardCategories {
+    category: string,
+    category_rate: number,
     rewards: RewardData[]
 }
 
@@ -37,12 +44,10 @@ interface CategoryData {
 }
 
 const Dashboard = () => {
-    const { username } = useSelector((state: RootState) => state.user.data)
     const [wallet, setWallet] = useState<CardData[]>([])
     const [categories, setCategories] = useState<CategoryData[]>([])
     const token = getToken()
 
-    // load wallet and category information
     useEffect(() => {
         const getDashboardData = async () => {
             const res = await fetch('/wallet', {
@@ -82,13 +87,17 @@ const Dashboard = () => {
                         return (
                             <Card key={cardKey} className='dashboard-card' title={card.name}>
                                 <div className='dashboard-card-rewards'>
-                                    {card.rewards.map((reward, i) => {
-                                        const rewardKey = `${i}-${cardKey}-${reward.category}`
+                                    <div className='dashboard-card-reward'>
+                                        <h3>{card.base_rate}{symbol}</h3>
+                                        <h3>default</h3>
+                                    </div>
+                                    {card.reward_categories.map(({ category, category_rate, rewards }, i) => {
+                                        const rewardKey = `${i}-${cardKey}-${category}`
 
                                         return (
                                             <div key={rewardKey} className='dashboard-card-reward'>
-                                                <h3>{reward.rate}{symbol}</h3>
-                                                <h3>{reward.category || 'default'}</h3>
+                                                <h3>{category_rate}{symbol}</h3>
+                                                <h3>{category}</h3>
                                             </div>
                                         )
                                     })}
