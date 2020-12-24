@@ -1,47 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { getToken } from './api/utils'
 import { Card } from 'antd'
-import { RootState } from './types'
+import CreditCardList from './components/CreditCardList'
+import CreditCardItem from './components/CreditCardItem'
 
-interface CardData {
-    card_id: number,
-    name: string,
-    type: 'point' | 'mile' | 'cash',
-    issuer: string,
-    network: string,
-    approved_on: string,
-    base_rate: number,
-    reward_categories: CardRewardCategories[]
-}
-
-interface CardRewardCategories {
-    category: string,
-    category_rate: number,
-    rewards: RewardData[]
-}
-
-interface RewardData {
-    rate: number,
-    active_quarter: string | null,
-    expires_at: string | null,
-    expires_in: string | null,
-    category: string | null,
-    subcategory: string | null,
-}
-
-interface RecommendedCardData {
-    card_id: number,
-    base_rate: number,
-    category_rate: number | null,
-    rewards: RewardData[]
-}
-
-interface CategoryData {
-    id: number,
-    name: string,
-    recommended: RecommendedCardData[]
-}
+import {
+    CardData,
+    CardTypeSymbolMap,
+    CategoryData,
+} from './types'
 
 const Dashboard = () => {
     const [wallet, setWallet] = useState<CardData[]>([])
@@ -68,7 +35,7 @@ const Dashboard = () => {
 
     // const userHasCards = wallet.length > 0
 
-    const typeSymbolMap: { [key in CardData['type']]: string } = {
+    const typeSymbolMap: CardTypeSymbolMap = {
         point: 'x',
         mile: 'x',
         cash: '%',
@@ -76,36 +43,16 @@ const Dashboard = () => {
 
     return (
         <div className='dashboard'>
-            {window.screen.width}
             <div className='dashboard-container'>
-                <div className='dashboard-cards'>
-                    <h1>My Wallet</h1>
-                    {wallet.map(card => {
-                        const cardKey = `${card.card_id}-${card.name}`
-                        const symbol = typeSymbolMap[card.type]
 
-                        return (
-                            <Card key={cardKey} className='dashboard-card' title={card.name}>
-                                <div className='dashboard-card-rewards'>
-                                    <div className='dashboard-card-reward'>
-                                        <h3>{card.base_rate}{symbol}</h3>
-                                        <h3>default</h3>
-                                    </div>
-                                    {card.reward_categories.map(({ category, category_rate, rewards }, i) => {
-                                        const rewardKey = `${i}-${cardKey}-${category}`
-
-                                        return (
-                                            <div key={rewardKey} className='dashboard-card-reward'>
-                                                <h3>{category_rate}{symbol}</h3>
-                                                <h3>{category}</h3>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                            </Card>
-                        )
-                    })}
-                </div>
+                <CreditCardList>
+                    {wallet.map(card => (
+                        <CreditCardItem
+                            card={card}
+                            symbol={typeSymbolMap[card.type]}
+                        />
+                    ))}
+                </CreditCardList>
 
                 <div className='dashboard-categories'>
                     <h1>Categories</h1>
