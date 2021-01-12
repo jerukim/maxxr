@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from 'react'
 import { Switch, Route, useRouteMatch, Redirect, RouteProps } from 'react-router-dom'
-import Loading from './Loading'
+import { Loading } from './components'
 import { useAuth } from './store/user'
 
 const Home = lazy(() => import('./Home'))
