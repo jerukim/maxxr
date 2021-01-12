@@ -1,17 +1,14 @@
 import { Card } from 'antd'
-
-import {
-    CardData,
-    CardTypeSymbol
-} from '../types'
+import { typeSymbolMap } from '../constants'
+import { CardData } from '../types'
 
 interface CreditCardItemProps {
-    symbol: CardTypeSymbol,
     card: CardData
 }
 
-const CreditCardItem = ({ symbol, card }: CreditCardItemProps) => {
+const CreditCardItem = ({ card }: CreditCardItemProps) => {
     const cardKey = `${card.card_id}-${card.name}`
+    const symbol = typeSymbolMap[card.type]
     return (
         <Card
             key={cardKey}
